@@ -13,6 +13,8 @@ database_id = "21325584-1e36-4192-8bb1-d254cdc59f23"
 
 [vars]
 ENVIRONMENT = "production"
+# 高德地图API Key（需要在Cloudflare Dashboard中配置）
+# AMAP_API_KEY = "your_amap_api_key_here"
 
 [build]
 command = ""
