@@ -57,9 +57,9 @@ app.route('/api/cards', cardsRouter);
 import { storesRouter } from './routes/stores';
 app.route('/api/stores', storesRouter);
 
-// 餐厅搜索
-import { storesSearchRouter } from './routes/stores-search';
-app.route('/', storesSearchRouter);
+// 餐厅数据库查询
+import { storesDbRouter } from './routes/stores-db';
+app.route('/', storesDbRouter);
 
 // 套餐管理
 import { combosRouter } from './routes/combos';
