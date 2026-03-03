@@ -1,0 +1,16 @@
+{
+  "name": "mcdonalds-workers",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "workers:dev": "wrangler dev",
+    "workers:deploy": "wrangler deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 execute mcdonalds_db --local --file=./drizzle/0000_init.sql",
+    "db:studio": "drizzle-kit studio"
+  }
+}
