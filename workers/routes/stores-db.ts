@@ -150,4 +150,4 @@ app.get('/api/stores/:storeId', async (c) => {
   }
 });
 
-export default app;
+export const storesDbRouter = app;

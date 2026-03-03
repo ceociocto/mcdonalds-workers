@@ -20,7 +20,7 @@ if ! wrangler whoami &> /dev/null; then
 fi
 
 echo "1️⃣  创建餐厅表..."
-wrangler d1 execute mcdonalds_db --remote --file=./drizzle/001_stores.sql
+wrangler d1 execute mcdonalds_db --remote --file=./drizzle/001_stores.sql --config=/Volumes/sn7100/jerry/.openclaw/workspace/mcdonalds-workers/wrangler.toml
 
 if [ $? -eq 0 ]; then
   echo "✅ 餐厅表创建成功"
@@ -31,7 +31,7 @@ fi
 
 echo ""
 echo "2️⃣  插入餐厅数据..."
-wrangler d1 execute mcdonalds_db --remote --file=./drizzle/002_stores_data.sql
+wrangler d1 execute mcdonalds_db --remote --file=./drizzle/002_stores_data.sql --config=/Volumes/sn7100/jerry/.openclaw/workspace/mcdonalds-workers/wrangler.toml
 
 if [ $? -eq 0 ]; then
   echo "✅ 餐厅数据插入成功"
