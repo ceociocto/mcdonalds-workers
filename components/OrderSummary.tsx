@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/lib/config';
 
 interface Card {
   id: number;
@@ -52,7 +53,7 @@ export default function OrderSummary({ store, combo, onConfirm, loading }: Order
   const estimateCard = async () => {
     try {
       setEstimating(true);
-      const response = await fetch(`/api/cards/available/${combo?.memberPrice}`);
+      const response = await fetch(`${API_BASE_URL}/api/cards/available/${combo?.memberPrice}`);
       const data = await response.json();
       if (data.success && data.data.length > 0) {
         setMatchedCard(data.data[0]);

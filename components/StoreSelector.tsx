@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/lib/config';
 
 interface Store {
   id: number;
@@ -34,7 +35,7 @@ export default function StoreSelector({ onStoreSelect, userLocation = { lat: 31.
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/stores/nearby?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=${radius}`
+        `${API_BASE_URL}/api/stores/nearby?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=${radius}`
       );
       const data = await response.json();
       if (data.success) {

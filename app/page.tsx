@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { API_BASE_URL } from '@/lib/config';
 import StoreSelector from '@/components/StoreSelector';
 import ComboSelector from '@/components/ComboSelector';
 import OrderSummary from '@/components/OrderSummary';
@@ -18,6 +19,10 @@ interface Combo {
   comboId: string;
   name: string;
   memberPrice: number;
+  originalPrice: number;
+  items: any;
+  discount: string;
+  category: string;
 }
 
 type Step = 'store' | 'combo' | 'summary' | 'success';
@@ -52,7 +57,7 @@ export default function Home() {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/orders', {
+      const response = await fetch(`${API_BASE_URL}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/lib/config';
 
 interface Combo {
   id: number;
@@ -35,7 +36,7 @@ export default function ComboSelector({ budget = 30, onComboSelect, selectedComb
   const fetchCombos = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/combos/budget/${budget}`);
+      const response = await fetch(`${API_BASE_URL}/api/combos/budget/${budget}`);
       const data = await response.json();
       if (data.success) {
         let filtered = data.data;
