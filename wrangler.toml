@@ -1,21 +1,19 @@
 name = "mcdonalds-workers"
 compatibility_date = "2024-01-01"
 main = "workers/index.ts"
-
-# 明确指定为Workers项目
 workers_dev = true
 
-# D1 数据库绑定
+# Pages构建输出目录
+pages_build_output_dir = "out"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "mcdonalds_db"
 database_id = "21325584-1e36-4192-8bb1-d254cdc59f23"
 
-# 环境变量
 [vars]
-ENVIRONMENT = "development"
+ENVIRONMENT = "production"
 
-# 禁用autoconfig
 [build]
 command = ""
 watch_dirs = ["workers"]

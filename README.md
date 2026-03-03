@@ -1,112 +1,26 @@
-# 🍔 麦当劳代下单服务
+# 🍔 麦当劳代下单服务 - 统一工程
 
-基于 Next.js 15 + Cloudflare Workers 的自动化麦当劳代下单平台
+> 全栈自动化下单平台 - Workers + Pages
 
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
+---
 
-## ✨ 特性
+## 📦 项目结构
 
-- 🌍 **全球边缘部署** - Cloudflare Workers 300+ 节点
-- ⚡ **毫秒级响应** - 15ms 冷启动时间
-- 💰 **零成本起步** - 免费额度 100k 请求/天
-- 🔒 **类型安全** - TypeScript + Drizzle ORM
-- 🎯 **智能匹配** - 自动选择最优会员卡
-- 🤖 **全自动** - 从下单到取餐码生成
-
-## 🚀 在线体验
-
-**生产环境**: https://mcdonalds-workers.lijieisme.workers.dev
-
-**GitHub仓库**: https://github.com/ceociocto/mcdonalds-workers
-
-## 📋 核心功能
-
-### 智能会员卡管理
-```typescript
-✅ 自动匹配可用会员卡（余额+限额）
-✅ 优先使用今日次数少的卡
-✅ 自动扣减余额
-✅ 使用日志完整记录
+```
+mcdonalds-workers/
+├── .github/workflows/    # GitHub Actions自动部署
+├── app/                  # Next.js前端（App Router）
+├── components/           # React组件
+├── lib/                  # 共享代码
+├── workers/              # Cloudflare Workers后端
+├── drizzle/              # 数据库迁移
+├── out/                  # Pages构建输出（生成后）
+└── wrangler.toml         # Cloudflare配置
 ```
 
-### 自动下单流程
-```typescript
-✅ 验证餐厅和套餐
-✅ 智能匹配会员卡
-✅ 生成订单号
-✅ 生成取餐码
-✅ 订单状态追踪
-```
+---
 
-## 🛠️ 技术栈
-
-| 层级 | 技术选型 | 说明 |
-|------|----------|------|
-| **前端** | Next.js 15 | App Router + RSC |
-| **后端** | Cloudflare Workers | 边缘计算 |
-| **框架** | Hono | 轻量级 Web 框架 |
-| **数据库** | Cloudflare D1 | 边缘 SQLite |
-| **ORM** | Drizzle ORM | TypeScript-first |
-| **样式** | TailwindCSS | 实用优先 |
-| **语言** | TypeScript | 类型安全 |
-
-## 📡 API 端点
-
-### 基础
-```bash
-# 健康检查
-GET /health
-
-# API 信息
-GET /
-```
-
-### 会员卡管理
-```bash
-# 添加会员卡
-POST /api/cards
-
-# 查询所有会员卡
-GET /api/cards
-
-# 查询可用会员卡
-GET /api/cards/available/:amount
-```
-
-### 餐厅管理
-```bash
-# 查询所有餐厅
-GET /api/stores
-
-# 查询附近餐厅
-GET /api/stores/nearby?lat=31.2304&lng=121.4737&radius=3000
-```
-
-### 套餐管理
-```bash
-# 查询所有套餐
-GET /api/combos
-
-# 查询预算内套餐
-GET /api/combos/budget/:budget
-```
-
-### 订单管理
-```bash
-# 创建订单
-POST /api/orders
-
-# 查询订单
-GET /api/orders/:orderId
-
-# 查询用户订单
-GET /api/orders/user/:userId
-```
-
-## 📦 快速开始
+## 🚀 快速开始
 
 ### 本地开发
 
@@ -114,92 +28,229 @@ GET /api/orders/user/:userId
 # 安装依赖
 npm install
 
-# 启动 Next.js（前端）
+# 启动前端开发服务器
 npm run dev
+# 访问 http://localhost:3000
 
-# 启动 Workers（后端）
+# 启动后端开发服务器
 npm run workers:dev
+# 访问 http://localhost:8787
 ```
 
-### 部署到 Cloudflare
+### 构建
 
 ```bash
-# 部署 Workers
+# 构建前端静态文件
+npm run build
+# 输出到 out/ 目录
+```
+
+### 部署
+
+```bash
+# 部署Workers（后端）
 npm run workers:deploy
 
-# 查看 Workers 日志
-wrangler tail
+# 部署Pages（前端）
+wrangler pages deploy out --project-name=mcdonalds-workers
 ```
-
-## 🗄️ 数据库初始化
-
-```bash
-# 创建数据库表
-wrangler d1 execute mcdonalds_db --remote --file=./drizzle/0000_init.sql
-```
-
-## 📁 项目结构
-
-```
-mcdonalds-workers/
-├── app/                  # Next.js App Router
-├── workers/             # Cloudflare Workers
-│   ├── index.ts        # Workers 入口
-│   └── routes/         # API 路由
-├── lib/                # 共享代码
-│   ├── schema.ts      # 数据库 Schema
-│   ├── db.ts          # D1 连接
-│   └── utils.ts       # 工具函数
-├── drizzle/            # 数据库迁移
-├── wrangler.toml      # Cloudflare 配置
-└── package.json
-```
-
-## 📊 性能指标
-
-| 指标 | 数值 |
-|------|------|
-| **冷启动** | 15ms |
-| **全球节点** | 300+ |
-| **免费额度** | 100k 请求/天 |
-| **月成本** | $0-5 |
-| **响应时间** | < 50ms (P95) |
-
-## 🎯 业务流程
-
-```
-用户（闲鱼）
-  ↓
-选择餐厅
-  ↓
-选择套餐
-  ↓
-智能匹配会员卡
-  ↓
-自动下单到麦当劳
-  ↓
-生成取餐码
-  ↓
-完成订单
-```
-
-## 🚧 待开发
-
-- [ ] 接入真实麦当劳 API
-- [ ] 开发完整前端界面
-- [ ] 集成高德地图
-- [ ] 闲鱼商品上架
-- [ ] 短信通知
-- [ ] 数据统计面板
-
-## 📄 License
-
-MIT License
-
-## 👤 作者
-
-ceociocto
 
 ---
 
-**Made with ❤️ using Next.js + Cloudflare Workers**
+## 🔄 自动部署（GitHub Actions）
+
+### 配置
+
+项目已配置GitHub Actions，提交代码到main分支会自动触发部署：
+
+1. **Workers部署** - 后端API
+2. **Pages部署** - 前端界面
+
+### Secrets配置
+
+需要在GitHub仓库中配置以下Secrets：
+
+```
+CLOUDFLARE_API_TOKEN       # Cloudflare API令牌
+CLOUDFLARE_ACCOUNT_ID      # Cloudflare账户ID
+```
+
+### 获取方式
+
+```bash
+# 登录Cloudflare
+wrangler login
+
+# 获取API Token
+# 访问: https://dash.cloudflare.com/profile/api-tokens
+
+# 获取Account ID
+wrangler whoami
+```
+
+---
+
+## 🌐 生产环境
+
+### 访问地址
+
+```
+前端: https://mcdonalds-workers.pages.dev
+后端: https://mcdonalds-workers.lijieisme.workers.dev
+```
+
+### API配置
+
+前端通过环境变量调用后端API：
+
+```typescript
+// lib/config.ts
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://mcdonalds-workers.lijieisme.workers.dev';
+```
+
+---
+
+## 📊 技术栈
+
+| 层级 | 技术 | 说明 |
+|------|------|------|
+| 前端 | Next.js 15 + React 19 | 静态导出到Pages |
+| 后端 | Hono + TypeScript | Workers API |
+| 数据库 | D1 (SQLite) | 边缘数据库 |
+| CI/CD | GitHub Actions | 自动部署 |
+| 托管 | Cloudflare | 全栈部署 |
+
+---
+
+## 🎯 工作流程
+
+### 开发流程
+
+```
+1. 本地开发
+   npm run dev           # 前端
+   npm run workers:dev   # 后端
+
+2. 提交代码
+   git add .
+   git commit -m "feat: xxx"
+   git push
+
+3. 自动部署
+   GitHub Actions → Workers → Pages
+```
+
+### 部署流程
+
+```
+push to main
+    ↓
+GitHub Actions触发
+    ↓
+① 部署Workers（API）
+    ↓
+② 构建Next.js
+    ↓
+③ 部署Pages（前端）
+    ↓
+完成 ✅
+```
+
+---
+
+## 🔧 配置文件
+
+### wrangler.toml
+```toml
+name = "mcdonalds-workers"
+main = "workers/index.ts"
+pages_build_output_dir = "out"
+
+[[d1_databases]]
+binding = "DB"
+database_id = "21325584-1e36-4192-8bb1-d254cdc59f23"
+```
+
+### next.config.ts
+```typescript
+export default {
+  output: 'export',
+  images: { unoptimized: true },
+  trailingSlash: true,
+};
+```
+
+---
+
+## 📝 命令参考
+
+```bash
+# 开发
+npm run dev              # 前端
+npm run workers:dev      # 后端
+
+# 构建
+npm run build            # 构建前端
+
+# 部署
+npm run workers:deploy   # 部署Workers
+wrangler pages deploy    # 部署Pages
+
+# 数据库
+npm run db:generate      # 生成迁移
+npm run db:migrate       # 执行迁移
+npm run db:studio        # 打开Studio
+```
+
+---
+
+## 🎊 项目优势
+
+### ✅ 统一管理
+- 前后端代码在同一仓库
+- 统一的依赖管理
+- 简化的部署流程
+
+### ✅ 自动化
+- Git提交自动触发部署
+- CI/CD自动化测试
+- 零停机部署
+
+### ✅ 边缘计算
+- 全球300+节点
+- 毫秒级响应
+- 免费额度充足
+
+---
+
+## 💡 最佳实践
+
+### 1. 分支管理
+```bash
+main          # 生产分支（自动部署）
+develop       # 开发分支
+feature/*     # 功能分支
+```
+
+### 2. 提交规范
+```bash
+feat: 新功能
+fix: 修复bug
+docs: 文档更新
+deploy: 部署配置
+```
+
+### 3. 环境变量
+```bash
+# .env.local（本地）
+NEXT_PUBLIC_API_URL=http://localhost:8787
+
+# 生产环境
+NEXT_PUBLIC_API_URL=https://mcdonalds-workers.lijieisme.workers.dev
+```
+
+---
+
+总裁，现在**所有代码统一管理**，Git提交自动部署！🚀
+
+需要我帮你配置GitHub Secrets吗？
